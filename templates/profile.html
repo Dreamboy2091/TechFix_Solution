@@ -1,0 +1,110 @@
+<!-- templates/profile.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Profile Picture Section -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <!-- Display Profile Picture -->
+                    {% if user.profile_pic %}
+                        <img src="{{ url_for('static', filename='uploads/profile_pics/' + user.profile_pic) }}" 
+                             alt="{{ user.username }}" 
+                             class="rounded-circle mb-3"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <!-- Default avatar -->
+                        <div class="rounded-circle bg-primary mb-3 mx-auto d-flex align-items-center justify-content-center" 
+                             style="width: 150px; height: 150px;">
+                            <span class="text-white display-4">{{ user.username[0]|upper }}</span>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Upload Form (only for own profile) -->
+                    {% if current_user.id == user.id %}
+                    <form method="POST" action="{{ url_for('upload_profile_pic') }}" enctype="multipart/form-data">
+                        <div class="input-group mb-2">
+                            <input type="file" name="profile_pic" class="form-control form-control-sm" accept="image/*" required>
+                            <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+                        </div>
+                        <small class="text-muted">JPG, PNG up to 2MB</small>
+                    </form>
+                    {% endif %}
+                    
+                    <h3>{{ user.username }}</h3>
+                    <p class="text-muted">{{ user.email }}</p>
+                    <p><i class="far fa-calendar me-1"></i>Joined {{ user.created_at.strftime('%B %Y') }}</p>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Your Contributions</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="text-primary">{{ problems|length }}</h4>
+                            <p class="text-muted">Problems</p>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="text-success">{{ solutions|length }}</h4>
+                            <p class="text-muted">Solutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- Welcome & Quick Actions -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4>My Profile</h4>
+                    <p>Welcome to your profile page! Here you can track your contributions and help others.</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <a href="{{ url_for('browse') }}" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-search me-2"></i>Browse Problems
+                            </a>
+                            <small class="text-muted">Find tech issues to solve</small>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{{ url_for('submit_problem') }}" class="btn btn-outline-success w-100 mb-2">
+                                <i class="fas fa-plus me-2"></i>Submit Problem
+                            </a>
+                            <small class="text-muted">Get help with your tech issue</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Recent Activity</h5>
+                    {% if problems %}
+                        <h6>Problems You Posted:</h6>
+                        <div class="list-group">
+                            {% for problem in problems %}
+                            <a href="{{ url_for('problem_detail', problem_id=problem.id) }}" class="list-group-item">
+                                <strong>{{ problem.title }}</strong><br>
+                                <small class="text-muted">
+                                    {{ problem.solution_count }} solutions • {{ problem.views }} views
+                                </small>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No problems posted yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Success Header -->
+    <div class="text-center mb-5">
+        <div class="success-icon mb-4">
+            <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" 
+                 style="width: 100px; height: 100px;">
+                <i class="fas fa-check fa-3x text-white"></i>
+            </div>
+        </div>
+        <h1 class="display-5 fw-bold text-success">Account Created Successfully! 🎉</h1>
+        <p class="lead">Welcome to TechFix Solutions, {{ user.username }}!</p>
+    </div>
+
+    <!-- Account Details Card -->
+    <div class="card shadow-lg mb-5">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-user-circle me-2"></i>Your Account Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary">Username</h5>
+                        <div class="p-3 bg-light rounded">
+                            <code class="fs-4">{{ user.username }}</code>
+                        </div>
+                        <small class="text-muted">Use this to log in</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary">Email Address</h5>
+                        <div class="p-3 bg-light rounded">
+                            <code class="fs-5">{{ user.email }}</code>
+                        </div>
+                        <small class="text-muted">For account recovery</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary">Member Since</h5>
+                        <div class="p-3 bg-light rounded">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            {{ user.created_at.strftime('%B %d, %Y') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary">Account Status</h5>
+                        <div class="p-3 bg-light rounded">
+                            <span class="badge bg-success">Active</span>
+                            <span class="badge bg-info ms-2">Verified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Started Section -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0"><i class="fas fa-rocket me-2"></i>Get Started with TechFix</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center">
+                            <div class="icon-circle bg-primary mb-3">
+                                <i class="fas fa-search fa-2x text-white"></i>
+                            </div>
+                            <h4>Browse Problems</h4>
+                            <p>Find step-by-step solutions for common tech issues</p>
+                            <a href="{{ url_for('browse') }}" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Explore Solutions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-success">
+                        <div class="card-body text-center">
+                            <div class="icon-circle bg-success mb-3">
+                                <i class="fas fa-question-circle fa-2x text-white"></i>
+                            </div>
+                            <h4>Submit Problem</h4>
+                            <p>Get help with your tech issues from the community</p>
+                            <a href="{{ url_for('submit_problem') }}" class="btn btn-success">
+                                <i class="fas fa-plus-circle me-2"></i>Ask for Help
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-warning">
+                        <div class="card-body text-center">
+                            <div class="icon-circle bg-warning mb-3">
+                                <i class="fas fa-hands-helping fa-2x text-white"></i>
+                            </div>
+                            <h4>Help Others</h4>
+                            <p>Share your knowledge and earn reputation points</p>
+                            <a href="{{ url_for('browse') }}" class="btn btn-warning">
+                                <i class="fas fa-lightbulb me-2"></i>Browse to Help
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Note -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-shield-alt me-2"></i>Security Tips</h5>
+                <ul class="mb-0">
+                    <li>Never share your password with anyone</li>
+                    <li>Use a strong, unique password</li>
+                    <li>TechFix staff will never ask for your password</li>
+                    <li>Log out when using public computers</li>
+                </ul>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('browse') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-search me-2"></i>Browse Problems
+                </a>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-home me-2"></i>Go to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Details -->
+    <div class="alert alert-warning mt-4">
+        <h5><i class="fas fa-save me-2"></i>Save Your Details</h5>
+        <p class="mb-0">We recommend taking a screenshot of this page or writing down your username. You can always find your account details in your profile.</p>
+    </div>
+</div>
+
+<style>
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

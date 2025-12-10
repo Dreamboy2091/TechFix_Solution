@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - U.TechFix{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">📞 Contact U.TechFix</h1>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">Direct Contact Channels</h3>
+                    
+                    <div class="row">
+                        <!-- WhatsApp -->
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 border rounded bg-light">
+                                <h5>💬 WhatsApp Support</h5>
+                                <p class="mb-1"><strong>Fastest Response</strong></p>
+                                <p class="mb-2">For instant tech help & platform questions</p>
+                                <a href="https://wa.me/2349128460569" 
+                                   class="btn btn-success btn-sm" 
+                                   target="_blank">
+                                    <i class="fab fa-whatsapp"></i> Message on WhatsApp
+                                </a>
+                                <small class="d-block mt-1">+234 912 846 0569</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 border rounded bg-light">
+                                <h5>📞 Call / SMS</h5>
+                                <p class="mb-1"><strong>Voice Support</strong></p>
+                                <p class="mb-2">For urgent platform issues</p>
+                                <p class="fw-bold">0912 846 0569</p>
+                                <small class="d-block text-muted">Call between 9AM - 6PM WAT</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="p-3 border rounded bg-light mb-4">
+                        <h5>📧 Email Support</h5>
+                        <p class="mb-1"><strong>For detailed queries & reports</strong></p>
+                        <p class="mb-2">
+                            <a href="mailto:usmanabdullah2091@gmail.com" class="fw-bold">
+                                usmanabdullah2091@gmail.com
+                            </a>
+                        </p>
+                        <small class="text-muted">Response within 24 hours</small>
+                    </div>
+                    
+                    <!-- Note -->
+                    <div class="alert alert-info">
+                        <strong>📝 Note:</strong> For <strong>technical support</strong> (Windows, software, etc.), 
+                        please use the <a href="{{ url_for('submit_problem') }}">Submit Problem</a> 
+                        feature to get help from the community.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Report Bugs Section -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">🐛 Report Platform Bugs</h3>
+                    <p>
+                        Found a bug or issue with U.TechFix? Here's how to report it:
+                    </p>
+                    
+                    <ol class="mb-3">
+                        <li><strong>Submit as a Problem</strong>: Use the "Submit Problem" page with category "Platform Bug"</li>
+                        <li><strong>Include Details</strong>:
+                            <ul>
+                                <li>What were you trying to do?</li>
+                                <li>What happened instead?</li>
+                                <li>Error messages (if any)</li>
+                                <li>Screenshots (if possible)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tag it</strong>: Use tags like <code>bug-report</code>, <code>platform-issue</code></li>
+                    </ol>
+                    
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Platform bugs get priority!</strong> 
+                        I'll fix them ASAP since I'm the developer (Dreamboy).
+                    </div>
+                    
+                    <a href="{{ url_for('submit_problem') }}" class="btn btn-warning">
+                        🐛 Report a Bug Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </h4>
+            </div>
+            
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('register') }}">
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" 
+                               placeholder="Choose a username" required
+                               minlength="3" maxlength="20">
+                        <small class="text-muted">3-20 characters, letters and numbers only</small>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" 
+                               placeholder="your@email.com" required>
+                        <small class="text-muted">We'll never share your email</small>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" 
+                               placeholder="Create a password" required
+                               minlength="6">
+                        <small class="text-muted">At least 6 characters</small>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="mb-4">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" 
+                               placeholder="Confirm password" required>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i> Register Now
+                        </button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <p class="mb-2">Already have an account?</p>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login Here
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Benefits Card -->
+        <div class="card mt-4 border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">
+                    <i class="fas fa-check-circle me-2"></i>Benefits of Registering
+                </h6>
+                <ul class="small mb-0">
+                    <li>Submit tech problems and get help</li>
+                    <li>Save favorite solutions</li>
+                    <li>Earn reputation by helping others</li>
+                    <li>Track your problem-solving history</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

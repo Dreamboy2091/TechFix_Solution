@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero-section text-center py-5 mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            Fix Tech Problems With
+            <span class="text-primary">Step-by-Step</span> Guides
+        </h1>
+        
+        <p class="lead mb-4">
+            From software installation to hardware troubleshooting. 
+            Clear instructions for beginners and experts.
+        </p>
+        
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+            <a href="{{ url_for('browse') }}" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-search me-2"></i> Browse Solutions
+            </a>
+            <a href="{{ url_for('submit_problem') }}" class="btn btn-outline-primary btn-lg px-4">
+                <i class="bi bi-plus-circle me-2"></i> Submit Problem
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works mb-5">
+    <h2 class="text-center mb-5">How TechFix Works</h2>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="step-number mb-3">
+                    <span class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                          style="width: 60px; height: 60px;">
+                        <i class="bi bi-1-circle-fill fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="card-title mb-3">Describe Your Problem</h4>
+                <p class="card-text">
+                    Tell us what's wrong with your device, software, or network. 
+                    Be as detailed as possible.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="step-number mb-3">
+                    <span class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                          style="width: 60px; height: 60px;">
+                        <i class="bi bi-2-circle-fill fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="card-title mb-3">Get Clear Instructions</h4>
+                <p class="card-text">
+                    Receive numbered steps with screenshots, videos, 
+                    and troubleshooting tips.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="step-number mb-3">
+                    <span class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                          style="width: 60px; height: 60px;">
+                        <i class="bi bi-3-circle-fill fs-3"></i>
+                    </span>
+                </div>
+                <h4 class="card-title mb-3">Solve & Share</h4>
+                <p class="card-text">
+                    Follow the guide at your own pace. 
+                    Share your experience to help others.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ONLY ONE "Recently Solved Problems" Section -->
+<section class="featured-problems mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Recently Solved Problems</h2>
+        <a href="{{ url_for('browse') }}" class="btn btn-outline-primary">
+            View All <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    <div class="row">
+        {% if recent_problems %}
+            {% for problem in recent_problems %}
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 problem-card">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">{{ problem.category }}</span>
+                        <h5 class="card-title">
+                            <a href="{{ url_for('problem_detail', problem_id=problem.id) }}" 
+                               class="text-decoration-none text-dark">
+                                {{ problem.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted small">
+                            <i class="fas fa-list-ol"></i> 
+                            {{ problem.solution_count }} step-by-step solution{{ 's' if problem.solution_count > 1 else '' }}
+                        </p>
+                        
+                        {% if problem.is_solved %}
+                        <span class="badge bg-success">
+                            <i class="fas fa-check-circle"></i> Solved
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="{{ url_for('problem_detail', problem_id=problem.id) }}" 
+                           class="btn btn-sm btn-outline-primary w-100">
+                            View Solution
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    No solved problems yet. 
+                    <a href="/add-real-solutions" class="fw-bold">Click here to add sample problems</a> or 
+                    <a href="{{ url_for('submit_problem') }}">submit your own problem</a>.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="cta-section bg-primary text-white rounded p-5 mt-5 text-center">
+    <h2 class="mb-3">Have a Tech Problem?</h2>
+    <p class="mb-4">Get free, community-driven solutions in minutes.</p>
+    <a href="{{ url_for('submit_problem') }}" class="btn btn-light btn-lg px-5">
+        <i class="bi bi-question-circle me-2"></i> Ask for Help
+    </a>
+</section>
+{% endblock %}

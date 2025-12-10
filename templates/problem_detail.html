@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Problem Header -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h3 class="mb-1">{{ problem.title }}</h3>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <span class="badge bg-light text-dark">
+                            <i class="fas fa-tag me-1"></i> {{ problem.category|title }}
+                        </span>
+                        {% if problem.device_type %}
+                        <span class="badge bg-secondary">
+                            <i class="fas fa-laptop me-1"></i> {{ problem.device_type }}
+                        </span>
+                        {% endif %}
+                        {% if problem.operating_system %}
+                        <span class="badge bg-info">
+                            <i class="fas fa-code-branch me-1"></i> {{ problem.operating_system }}
+                        </span>
+                        {% endif %}
+                        <span class="badge {% if problem.urgency == 'high' %}bg-danger{% elif problem.urgency == 'medium' %}bg-warning{% else %}bg-success{% endif %}">
+                            <i class="fas fa-clock me-1"></i> {{ problem.urgency|title }}
+                        </span>
+                        {% if problem.is_solved %}
+                        <span class="badge bg-success">
+                            <i class="fas fa-check-circle me-1"></i> Solved
+                        </span>
+                        {% else %}
+                        <span class="badge bg-danger">
+                            <i class="fas fa-question-circle me-1"></i> Needs Solution
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-end">
+                    <small class="text-light">
+                        <i class="fas fa-eye me-1"></i> {{ problem.views }} views
+                        <i class="fas fa-comment ms-3 me-1"></i> {{ problem.solutions|length }} solutions
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="mb-4">
+                <h5>Problem Description</h5>
+                <div class="problem-description p-3 bg-light rounded">
+                    {{ problem.description|replace('\n', '<br>')|safe }}
+                </div>
+            </div>
+            
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    <i class="fas fa-user me-1"></i> 
+                    Posted by 
+                    <a href="{{ url_for('profile', username=problem.author.username) }}" 
+                       class="text-decoration-none">
+                        {{ problem.author.username }}
+                    </a>
+                    on {{ problem.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- QUICK SOLUTION FORM (COMMENT STYLE) -->
+    {% if current_user.is_authenticated and problem.user_id != current_user.id %}
+    <div class="card mb-4 border-success">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-reply me-2"></i>Post a Quick Solution</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('quick_solution', problem_id=problem.id) }}">
+                <div class="mb-3">
+                    <textarea name="steps" class="form-control" rows="4" 
+                              placeholder="Write your step-by-step solution here. Use numbered steps or bullet points..." required></textarea>
+                    <small class="text-muted">Be clear and detailed. Each step on a new line.</small>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <select name="difficulty" class="form-select">
+                            <option value="Beginner">Beginner Level</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <input type="text" name="estimated_time" class="form-control" 
+                               placeholder="Estimated time (e.g., 10-15 min)">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-paper-plane me-2"></i> Post Solution
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% elif not current_user.is_authenticated %}
+    <div class="card mb-4 border-warning">
+        <div class="card-body text-center">
+            <h5><i class="fas fa-sign-in-alt me-2"></i>Login to Help</h5>
+            <p>You need to be logged in to post a solution.</p>
+            <a href="{{ url_for('login') }}" class="btn btn-primary me-2">
+                <i class="fas fa-sign-in-alt me-2"></i> Login
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-outline-primary">
+                <i class="fas fa-user-plus me-2"></i> Register
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Solutions Section -->
+    <div class="solutions-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>
+                <i class="fas fa-list-ol me-2"></i>
+                Solutions 
+                <span class="badge bg-success">{{ problem.solutions|length }}</span>
+            </h4>
+            
+            <!-- Detailed Solution Button -->
+            {% if current_user.is_authenticated and problem.user_id != current_user.id %}
+            <a href="{{ url_for('add_solution', problem_id=problem.id) }}" 
+               class="btn btn-outline-success">
+                <i class="fas fa-plus-circle me-2"></i> Add Detailed Solution
+            </a>
+            {% endif %}
+        </div>
+        
+        {% if problem.solutions %}
+            {% for solution in problem.solutions %}
+            <div class="card mb-3 solution-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{{ solution.title }}</h5>
+                        <div>
+                            <span class="badge bg-info">{{ solution.difficulty }}</span>
+                            {% if solution.is_verified %}
+                            <span class="badge bg-success ms-2">✅ Verified</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <small class="text-muted">
+                        <i class="fas fa-user me-1"></i>
+                        <a href="{{ url_for('profile', username=solution.author.username) }}">
+                            {{ solution.author.username }}
+                        </a>
+                        • {{ solution.created_at.strftime('%b %d, %Y') }}
+                        {% if solution.estimated_time %}
+                        • <i class="fas fa-clock ms-2 me-1"></i>{{ solution.estimated_time }}
+                        {% endif %}
+                    </small>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Display Steps -->
+                    <div class="steps-container">
+                        {% if solution.steps %}
+                            {% set steps = solution.steps.split('\n') %}
+                            {% for step in steps %}
+                                {% if step.strip() %}
+                                <div class="step mb-3">
+                                    <div class="step-number d-inline-block bg-primary text-white rounded-circle text-center me-3" 
+                                         style="width: 30px; height: 30px; line-height: 30px;">
+                                        {{ loop.index }}
+                                    </div>
+                                    <div class="step-content d-inline-block w-85">
+                                        {{ step }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No steps provided for this solution.</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Voting -->
+                    <div class="mt-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{ url_for('upvote_solution', solution_id=solution.id) }}" 
+                               class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-thumbs-up"></i> Helpful 
+                                <span class="badge bg-success">{{ solution.upvotes }}</span>
+                            </a>
+                            <a href="{{ url_for('downvote_solution', solution_id=solution.id) }}" 
+                               class="btn btn-sm btn-outline-secondary ms-2">
+                                <i class="fas fa-thumbs-down"></i> 
+                                <span class="badge bg-secondary">{{ solution.downvotes }}</span>
+                            </a>
+                        </div>
+                        {% if solution.helpful_score > 0 %}
+                        <span class="badge bg-light text-dark">
+                            {{ solution.helpful_score }}% found this helpful
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- NO SOLUTIONS YET -->
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-lightbulb fa-3x text-muted mb-3"></i>
+                    <h5>No Solutions Yet</h5>
+                    <p class="text-muted mb-4">Be the first to help by providing a step-by-step solution!</p>
+                    
+                    {% if current_user.is_authenticated and problem.user_id != current_user.id %}
+                        <a href="{{ url_for('add_solution', problem_id=problem.id) }}" 
+                           class="btn btn-success btn-lg">
+                            <i class="fas fa-plus-circle me-2"></i> Be First to Add Solution
+                        </a>
+                    {% elif not current_user.is_authenticated %}
+                        <div class="mt-3">
+                            <a href="{{ url_for('login') }}" class="btn btn-primary me-2">
+                                <i class="fas fa-sign-in-alt me-2"></i> Login to Help
+                            </a>
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i> Register to Help
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Back to Browse -->
+    <div class="mt-4">
+        <a href="{{ url_for('browse') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Back to All Problems
+        </a>
+    </div>
+</div>
+
+<style>
+.problem-description {
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.step {
+    border-left: 3px solid #0d6efd;
+    padding-left: 15px;
+    margin-bottom: 15px;
+}
+
+.solution-card {
+    border-left: 4px solid #198754;
+    transition: transform 0.2s;
+}
+
+.solution-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

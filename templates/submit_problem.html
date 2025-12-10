@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>Submit Tech Problem
+                </h4>
+                <small class="text-light">Describe your issue clearly for better help</small>
+            </div>
+            
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('submit_problem') }}">
+                    <!-- Problem Title -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Problem Title *</label>
+                        <input type="text" name="title" class="form-control form-control-lg" 
+                               placeholder="e.g., 'Python won't install on Windows 11'"
+                               required maxlength="200">
+                        <small class="text-muted">Be specific and descriptive</small>
+                    </div>
+                    
+                    <!-- Category Selection -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Category *</label>
+                            <select name="category" class="form-select" required>
+                                <option value="">Select category</option>
+                                <option value="software">Software</option>
+                                <option value="hardware">Hardware</option>
+                                <option value="network">Network/Internet</option>
+                                <option value="operating-system">Operating System</option>
+                                <option value="mobile">Mobile Device</option>
+                                <option value="printer">Printer</option>
+                                <option value="platform-bug">Platform Bug (U.TechFix Issue)</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Urgency Level</label>
+                            <select name="urgency" class="form-select">
+                                <option value="low">Low (Can wait)</option>
+                                <option value="medium" selected>Medium (Need soon)</option>
+                                <option value="high">High (Need immediately)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Device Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Device Type</label>
+                            <select name="device_type" class="form-select">
+                                <option value="">Select device</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="desktop">Desktop Computer</option>
+                                <option value="phone">Smartphone</option>
+                                <option value="tablet">Tablet</option>
+                                <option value="printer">Printer</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Operating System</label>
+                            <select name="operating_system" class="form-select">
+                                <option value="">Select OS</option>
+                                <option value="windows">Windows</option>
+                                <option value="mac">macOS</option>
+                                <option value="linux">Linux</option>
+                                <option value="android">Android</option>
+                                <option value="ios">iOS/iPadOS</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Description -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Detailed Description *</label>
+                        <textarea name="description" class="form-control" rows="8" 
+                                  placeholder="Describe your problem in detail. Include:
+- What were you trying to do?
+- What error messages are you seeing?
+- When did the problem start?
+- What have you tried so far?
+- Any recent changes to your system?
+
+For PLATFORM BUGS, also include:
+- Your browser and version
+- Steps to reproduce the bug
+- Screenshot details"
+                                  required></textarea>
+                        <small class="text-muted">The more details you provide, the better help you'll get</small>
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('browse') }}" class="btn btn-outline-secondary me-md-2">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i> Submit Problem
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Tips Card -->
+        <div class="card mt-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Tips for Better Help
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>Include error messages exactly as they appear</li>
+                    <li>Mention what you've already tried</li>
+                    <li>Specify your software/hardware versions</li>
+                    <li>Add screenshots if possible (coming soon)</li>
+                    <li><strong>For platform bugs:</strong> Mention browser type and steps to reproduce</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

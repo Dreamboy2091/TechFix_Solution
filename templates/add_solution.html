@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Propose Solution
+                    </h4>
+                    <small>Help solve: {{ problem.title }}</small>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_solution', problem_id=problem.id) }}">
+                        <!-- Solution Title -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Solution Title *</label>
+                            <input type="text" name="title" class="form-control" 
+                                   placeholder="e.g., 'Complete Python Installation Guide'"
+                                   required maxlength="200">
+                            <small class="text-muted">Give your solution a clear, descriptive title</small>
+                        </div>
+                        
+                        <!-- Steps -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Step-by-Step Instructions *</label>
+                            <textarea name="steps" class="form-control" rows="12" 
+                                      placeholder="Enter each step on a new line. You can use:
+• Bullet points for sub-steps
+• Numbered steps (Step 1:, Step 2:)
+• Include troubleshooting tips
+• Add code snippets if needed"
+                                      required></textarea>
+                            <small class="text-muted">Clear, numbered steps work best</small>
+                        </div>
+                        
+                        <!-- Difficulty & Time -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Difficulty Level</label>
+                                <select name="difficulty" class="form-select">
+                                    <option value="Beginner">Beginner (Easy)</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Estimated Time</label>
+                                <input type="text" name="estimated_time" class="form-control" 
+                                       placeholder="e.g., '10-15 minutes'">
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('problem_detail', problem_id=problem.id) }}" 
+                               class="btn btn-outline-secondary me-md-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i> Submit Solution
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Tips -->
+            <div class="card mt-4 border-info">
+                <div class="card-body">
+                    <h6><i class="fas fa-lightbulb text-info me-2"></i>Tips for Great Solutions</h6>
+                    <ul class="mb-0">
+                        <li>Use clear, numbered steps</li>
+                        <li>Include screenshots if possible (describe them)</li>
+                        <li>Add troubleshooting tips for common issues</li>
+                        <li>Mention any prerequisites or requirements</li>
+                        <li>Test your solution if you can</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
