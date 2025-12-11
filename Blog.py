@@ -559,22 +559,10 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template('contact.html', title='Contact Us')
+# ... all your other routes ...
 
 # ==================== RUN SERVER ====================
 if __name__ == '__main__':
-    print("🚀 TechFix Solutions - Step-by-Step Tech Help")
-    print("🌐 http://127.0.0.1:5000")
-    print("\n📊 Quick Commands:")
-    print("• /add-real-solutions - Add 4 real problems with solutions")
-    print("• /browse - Browse problems with search & filters")
-    print("• /submit - Submit new problem")
-    print("\n👤 Test Accounts:")
-    print("• techhelper / help123")
-    print("• testuser / test123")
-    print("\n" + "="*50)
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 
-# ==================== RUN SERVER ====================
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host='0.0.0.0', port=port)
