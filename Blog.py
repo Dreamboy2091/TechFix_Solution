@@ -573,3 +573,8 @@ if __name__ == '__main__':
     print("• testuser / test123")
     print("\n" + "="*50)
     app.run(debug=True)
+
+# ==================== RUN SERVER ====================
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
